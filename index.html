@@ -21,7 +21,7 @@
               "translate(" + margin.left + "," + margin.top + ")");
     
     // get the data
-    d3.csv("prices.csv", function(data) { 
+    d3.csv("pricesV2.csv", function(data) { 
       // X axis: scale and draw:
       var x = d3.scaleLinear()
           .domain([0, d3.max(data, function(d) { return +d.price })])     // can use this instead of 1000 to have the max of data: d3.max(data, function(d) { return +d.price })
@@ -34,7 +34,7 @@
       var histogram = d3.histogram()
           .value(function(d) { return d.price; })   // I need to give the vector of value
           .domain(x.domain())  // then the domain of the graphic
-          .thresholds(x.ticks(25)); // then the numbers of bins
+          .thresholds(x.ticks(24)); // then the numbers of bins
     
       // And apply this function to data to get the bins
       var bins = histogram(data);
@@ -42,10 +42,11 @@
       // Y axis: scale and draw:
       var y = d3.scaleLinear()
           .range([height, 0]);
-          y.domain([0, d3.max(bins, function(d) { return d.length; })]);   // d3.hist has to be called before the Y axis obviously
+          console.log(bins)
+          y.domain([0, d3.max(bins, function(d) { console.log(d); return d.length; })]);   // d3.hist has to be called before the Y axis obviously
       svg.append("g")
           .call(d3.axisLeft(y));
-    console.log(data)
+    
       // append the bar rectangles to the svg element
       svg.selectAll("rect")
           .data(bins)
